@@ -73,6 +73,20 @@ app.get("/api/images/:id", async (req, res) => {
   }
 });
 
+// Route pour récupérer tous les favoris
+app.get("/api/favoris", async (_, res) => {
+  try {
+    const response = await sql`
+      SELECT * FROM images
+      JOIN favoris ON images.id = favoris.image_id
+    `;
+    res.json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Échec de la récupération des favoris" });
+  }
+});
+
 // Route pour ajouter une nouvelle image
 app.post("/api/images", async (req, res) => {
   const { title, description, url, source, dominant_colors } = req.body;
