@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 type Image = {
   id: number;
+  favori_id: number;
   title: string;
   url: string;
 };
@@ -71,7 +72,7 @@ const FavoritesPage = () => {
 
                 {/* Bouton supprimer au survol */}
                 <button
-                  onClick={() => handleDelete(image.id)}
+                  onClick={() => handleDelete(image.favori_id)}
                   className="absolute top-2 right-2 bg-white text-gray-700 text-xs px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition hover:bg-red-50 hover:text-red-400"
                 >
                   ✕ Retirer

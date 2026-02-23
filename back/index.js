@@ -77,7 +77,7 @@ app.get("/api/images/:id", async (req, res) => {
 app.get("/api/favoris", async (_, res) => {
   try {
     const response = await sql`
-      SELECT * FROM images
+      SELECT images.*, favoris.id AS favori_id FROM images
       JOIN favoris ON images.id = favoris.image_id
     `;
     res.json(response);
