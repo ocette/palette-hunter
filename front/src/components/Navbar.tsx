@@ -1,18 +1,71 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 
-const Navbar = () => {
-  const navigate = useNavigate();
+export function Navbar() {
+  const [toggleMenu, setToggleMenu] = useState(false);
+  const location = useLocation();
+
+  const navLinks = [
+    { to: "/", label: "Accueil" },
+    { to: "/favoris", label: "Mes favoris" },
+    { to: "/ajouter", label: "Ajouter une image" },
+  ];
 
   return (
-    <nav>
-      <h1 onClick={() => navigate("/")}>Palette Hunter</h1>
-      <div>
-        <button onClick={() => navigate("/")}>Accueil</button>
-        <button onClick={() => navigate("/favoris")}>Mes favoris</button>
-        <button onClick={() => navigate("/ajouter")}>Ajouter une image</button>
+    <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <Link to="/" className="text-xl font-extrabold tracking-tight">
+            🎨 Palette Hunter
+          </Link>
+
+          {/* Desktop menu */}
+          <div className="hidden lg:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`text-sm font-medium transition hover:text-black ${
+                  location.pathname === link.to ? "text-black" : "text-gray-400"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Mobile bouton menu */}
+          <button
+            className="lg:hidden text-xl font-black"
+            onClick={() => setToggleMenu(!toggleMenu)}
+          >
+            {toggleMenu ? "✕" : "☰"}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile nav */}
+      <div
+        className={`fixed top-16 left-0 w-full bg-white lg:hidden overflow-hidden transition-all duration-300 ${
+          toggleMenu ? "h-screen opacity-100" : "h-0 opacity-0"
+        }`}
+      >
+        <div className="flex flex-col gap-6 pt-10 px-6">
+          {navLinks.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              onClick={() => setToggleMenu(false)}
+              className={`text-2xl font-bold uppercase tracking-tight transition ${
+                location.pathname === link.to ? "text-black" : "text-gray-300"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
       </div>
     </nav>
   );
-};
-
-export default Navbar;
+}

@@ -37,61 +37,95 @@ const AddImagePage = () => {
   };
 
   return (
-    <div>
-      <h1>Ajouter une image</h1>
+    <div className="min-h-screen flex flex-col">
+      <main className="flex-1 flex flex-col items-center px-6 md:px-16 py-12">
+        <h1 className="font-bold text-4xl uppercase tracking-tight self-center mb-10">
+          Ajouter une image
+        </h1>
 
-      <div>
-        <label>Titre *</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Ex: Pagode"
-        />
-      </div>
+        <div className="w-full max-w-2xl flex flex-col gap-6">
+          {/* Titre */}
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">
+              Titre <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Ex: Pagode"
+              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-300 outline-none focus:border-gray-400 transition"
+            />
+          </div>
 
-      <div>
-        <label>Description</label>
-        <input
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Ex: Pagode entourée de cerisiers en fleurs"
-        />
-      </div>
+          {/* Description */}
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">
+              Description
+            </label>
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Ex: Pagode entourée de cerisiers en fleurs"
+              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-300 outline-none focus:border-gray-400 transition"
+            />
+          </div>
 
-      <div>
-        <label>URL *</label>
-        <input
-          type="text"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          placeholder="Ex: https://monimage.com/photo.jpg"
-        />
-      </div>
+          {/* URL */}
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">
+              URL <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="Ex: https://monimage.com/photo.jpg"
+              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-300 outline-none focus:border-gray-400 transition"
+            />
+          </div>
 
-      <div>
-        <label>Source *</label>
-        <input
-          type="text"
-          value={source}
-          onChange={(e) => setSource(e.target.value)}
-          placeholder="Ex: Unsplash"
-        />
-      </div>
+          {/* Source */}
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">
+              Source <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={source}
+              onChange={(e) => setSource(e.target.value)}
+              placeholder="Ex: Unsplash"
+              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-300 outline-none focus:border-gray-400 transition"
+            />
+          </div>
 
-      <div>
-        <label>Couleurs dominantes *</label>
-        <input
-          type="text"
-          value={dominantColors}
-          onChange={(e) => setDominantColors(e.target.value)}
-          placeholder="Ex: Rouge, Bleu, Vert"
-        />
-        <p>Sépare les couleurs par des virgules</p>
-      </div>
+          {/* Couleurs dominantes */}
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">
+              Couleurs dominantes <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={dominantColors}
+              onChange={(e) => setDominantColors(e.target.value)}
+              placeholder="Ex: Rouge, Bleu, Vert"
+              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-300 outline-none focus:border-gray-400 transition"
+            />
+            <p className="text-xs text-gray-400 mt-1">
+              Sépare les couleurs par des virgules
+            </p>
+          </div>
 
-      <button onClick={handleSubmit}>Ajouter l'image</button>
+          {/* Bouton */}
+          <button
+            onClick={handleSubmit}
+            className="mt-4 w-fit bg-black text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition"
+          >
+            Ajouter l'image
+          </button>
+        </div>
+      </main>
     </div>
   );
 };

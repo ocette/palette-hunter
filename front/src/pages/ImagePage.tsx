@@ -49,34 +49,57 @@ const ImagePage = () => {
     }
   };
 
-  if (!image) return <p>Chargement...</p>;
+  if (!image) return <p className="p-10 text-gray-400">Chargement...</p>;
 
   return (
-    <div>
-      <img src={image.url} alt={image.title} />
-      <h1>{image.title}</h1>
-      <p>{image.description}</p>
-      <p>Source : {image.source}</p>
-
-      {palette && (
-        <div>
-          <h2>Palette de couleurs</h2>
-          <div>
-            {palette.colors.map((color) => (
-              <div
-                key={color}
-                style={{
-                  backgroundColor: color,
-                  width: "50px",
-                  height: "50px",
-                }}
-              />
-            ))}
-          </div>
+    <div className="min-h-screen flex flex-col">
+      {/* Contenu principal */}
+      <main className="flex-1 flex flex-col md:flex-row items-start gap-10 px-6 md:px-16 py-12">
+        {/* Image */}
+        <div className="w-full md:w-1/2">
+          <img
+            src={image.url}
+            alt={image.title}
+            className="w-full rounded-3xl object-cover"
+          />
         </div>
-      )}
 
-      <button onClick={handleAddFavorite}>Ajouter aux favoris</button>
+        {/* Infos */}
+        <div className="w-full md:w-1/2 flex flex-col gap-4">
+          <h1 className="font-bold text-5xl uppercase tracking-tight">
+            {image.title}
+          </h1>
+          <p className="font-semibold text-xl text-gray-800">
+            {image.description}
+          </p>
+          <p className="text-gray-400 font-light text-sm">{image.source}</p>
+
+          {/* Palette */}
+          {palette && (
+            <div className="flex flex-wrap gap-3 mt-4">
+              {palette.colors.map((color, index) => (
+                <div
+                  key={color}
+                  style={{ backgroundColor: color }}
+                  className={`rounded-2xl ${
+                    index < 2
+                      ? "w-36 h-20 md:w-48 md:h-24"
+                      : "w-24 h-20 md:w-32 md:h-24"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Bouton favoris */}
+          <button
+            onClick={handleAddFavorite}
+            className="mt-6 w-fit bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition"
+          >
+            ♡ Ajouter aux favoris
+          </button>
+        </div>
+      </main>
     </div>
   );
 };

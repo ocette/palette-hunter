@@ -10,11 +10,11 @@ type Image = {
   dominant_colors: string[];
 };
 
-type ImageProps = {
+type Props = {
   images: Image[] | null;
 };
 
-const ImageGrid = ({ images: searchResults }: ImageProps) => {
+const ImageGrid = ({ images: searchResults }: Props) => {
   const [images, setImages] = useState<Image[]>([]);
   const navigate = useNavigate();
 
@@ -35,12 +35,42 @@ const ImageGrid = ({ images: searchResults }: ImageProps) => {
     }
   }, [searchResults]);
 
+  const handleAddFavorite = async (e: React.MouseEvent, id: number) => {
+    // Empêche de naviguer vers la page détail quand on clique sur le coeur
+    e.stopPropagation();
+    try {
+      await fetch("http://localhost:4242/api/favoris", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image_id: id }),
+      });
+      alert("Image ajoutée aux favoris !");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <div>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {images.map((image) => (
-        <div key={image.id} onClick={() => navigate(`/images/${image.id}`)}>
-          <img src={image.url} alt={image.title} />
-          <p>{image.title}</p>
+        <div
+          key={image.id}
+          className="relative group cursor-pointer"
+          onClick={() => navigate(`/images/${image.id}`)}
+        >
+          <img
+            src={image.url}
+            alt={image.title}
+            className="w-full aspect-3/4 object-cover rounded-2xl group-hover:brightness-90 transition"
+          />
+
+          {/* Icône coeur */}
+          <button
+            onClick={(e) => handleAddFavorite(e, image.id)}
+            className="absolute top-2 right-2 bg-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition hover:scale-110"
+          >
+            ♡
+          </button>
         </div>
       ))}
     </div>

@@ -30,7 +30,6 @@ const FavoritesPage = () => {
       await fetch(`http://localhost:4242/api/favoris/${id}`, {
         method: "DELETE",
       });
-      // On met à jour l'affichage en retirant l'image supprimée
       setFavorites(favorites.filter((image) => image.id !== id));
     } catch (error) {
       console.error(error);
@@ -38,22 +37,50 @@ const FavoritesPage = () => {
   };
 
   return (
-    <div>
-      <h1>Mes favoris</h1>
-      {favorites.length === 0 && <p>Aucun favori pour le moment</p>}
-      <div>
-        {favorites.map((image) => (
-          <div key={image.id}>
-            <img
-              src={image.url}
-              alt={image.title}
-              onClick={() => navigate(`/images/${image.id}`)}
-            />
-            <p>{image.title}</p>
-            <button onClick={() => handleDelete(image.id)}>Supprimer</button>
+    <div className="min-h-screen flex flex-col">
+      <main className="flex-1 px-6 md:px-16 py-12">
+        <h1 className="font-bold text-4xl uppercase tracking-tight mb-10">
+          Mes Favoris
+        </h1>
+
+        {/* Aucun favori */}
+        {favorites.length === 0 && (
+          <div className="flex flex-col items-center justify-center gap-4 mt-24 text-gray-400">
+            <p className="text-lg">Aucun favori pour le moment</p>
+            <button
+              onClick={() => navigate("/")}
+              className="bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition"
+            >
+              Découvrir des images
+            </button>
           </div>
-        ))}
-      </div>
+        )}
+
+        {/* Grille de favoris */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {favorites.map((image) => (
+            <div key={image.id} className="flex flex-col gap-2">
+              {/* Image cliquable */}
+              <div className="relative group">
+                <img
+                  src={image.url}
+                  alt={image.title}
+                  onClick={() => navigate(`/images/${image.id}`)}
+                  className="w-full aspect-square object-cover rounded-2xl cursor-pointer group-hover:brightness-90 transition"
+                />
+
+                {/* Bouton supprimer au survol */}
+                <button
+                  onClick={() => handleDelete(image.id)}
+                  className="absolute top-2 right-2 bg-white text-gray-700 text-xs px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition hover:bg-red-50 hover:text-red-400"
+                >
+                  ✕ Retirer
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </main>
     </div>
   );
 };
