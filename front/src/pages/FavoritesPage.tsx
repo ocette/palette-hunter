@@ -40,7 +40,7 @@ const FavoritesPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-1 px-6 md:px-16 py-12">
-        <h1 className="font-bold text-4xl uppercase tracking-tight mb-10">
+        <h1 className="font-extrabold text-4xl uppercase tracking-tight mb-10 text-center">
           Mes Favoris
         </h1>
 

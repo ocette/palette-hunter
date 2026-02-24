@@ -12,11 +12,11 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <nav className="bg-yellow-50 border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="text-xl font-extrabold tracking-tight">
+          <Link to="/" className="text-xl font-black tracking-tight">
             🎨 Palette Hunter
           </Link>
 
@@ -26,8 +26,8 @@ export function Navbar() {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`text-sm font-medium transition hover:text-black ${
-                  location.pathname === link.to ? "text-black" : "text-gray-400"
+                className={`text-l font-bold transition hover:text-black ${
+                  location.pathname === link.to ? "text-black" : "text-gray-500"
                 }`}
               >
                 {link.label}
@@ -57,8 +57,8 @@ export function Navbar() {
               key={link.to}
               to={link.to}
               onClick={() => setToggleMenu(false)}
-              className={`text-2xl font-bold uppercase tracking-tight transition ${
-                location.pathname === link.to ? "text-black" : "text-gray-300"
+              className={`text-2xl font-bold tracking-tight transition ${
+                location.pathname === link.to ? "text-black" : "text-gray-500"
               }`}
             >
               {link.label}

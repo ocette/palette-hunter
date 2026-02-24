@@ -39,7 +39,7 @@ const AddImagePage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-1 flex flex-col items-center px-6 md:px-16 py-12">
-        <h1 className="font-bold text-4xl uppercase tracking-tight self-center mb-10">
+        <h1 className="font-extrabold text-4xl uppercase tracking-tight self-center mb-10">
           Ajouter une image
         </h1>
 

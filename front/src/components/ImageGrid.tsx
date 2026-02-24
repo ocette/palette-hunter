@@ -67,7 +67,7 @@ const ImageGrid = ({ images: searchResults }: Props) => {
           {/* Icône coeur */}
           <button
             onClick={(e) => handleAddFavorite(e, image.id)}
-            className="absolute top-2 right-2 bg-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition hover:scale-110"
+            className="absolute text-xl h-6 w-6 top-2 right-2 bg-white rounded-full  opacity-0 group-hover:opacity-100 transition hover:scale-100"
           >
             ♡
           </button>

@@ -54,6 +54,51 @@ app.get("/api/images/search", async (req, res) => {
   }
 });
 
+// Route pour la recherche par couleur
+app.get("/api/images/color", async (req, res) => {
+  const { hex } = req.query;
+
+  if (!hex) {
+    return res.status(400).json({ error: "Paramètre hex requis" });
+  }
+
+  try {
+    const response = await sql`
+      WITH input_color AS (
+        SELECT
+          ('x' || substring(${hex}, 2, 2))::bit(8)::int AS r,
+          ('x' || substring(${hex}, 4, 2))::bit(8)::int AS g,
+          ('x' || substring(${hex}, 6, 2))::bit(8)::int AS b
+      ),
+      color_distances AS (
+        SELECT
+          p.id,
+          c.hex,
+          sqrt(
+            power(('x' || substring(c.hex, 2, 2))::bit(8)::int - ic.r, 2) +
+            power(('x' || substring(c.hex, 4, 2))::bit(8)::int - ic.g, 2) +
+            power(('x' || substring(c.hex, 6, 2))::bit(8)::int - ic.b, 2)
+          ) AS distance
+        FROM palettes p
+        CROSS JOIN LATERAL unnest(p.colors) AS c(hex)
+        CROSS JOIN input_color ic
+      )
+      SELECT
+        images.*,
+        MIN(cd.distance) AS min_distance
+      FROM color_distances cd
+      JOIN images ON images.id = cd.id
+      GROUP BY images.id
+      ORDER BY min_distance ASC
+      LIMIT 5
+    `;
+    res.json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Échec de la recherche par couleur" });
+  }
+});
+
 // Route pour récupérer une image et sa palette
 app.get("/api/images/:id", async (req, res) => {
   const { id } = req.params;
