@@ -31,7 +31,8 @@ const FavoritesPage = () => {
       await fetch(`http://localhost:4242/api/favoris/${id}`, {
         method: "DELETE",
       });
-      setFavorites(favorites.filter((image) => image.id !== id));
+      alert("Image suprrimée des favoris !");
+      setFavorites(favorites.filter((image) => image.favori_id !== id));
     } catch (error) {
       console.error(error);
     }
@@ -50,7 +51,7 @@ const FavoritesPage = () => {
             <p className="text-lg">Aucun favori pour le moment</p>
             <button
               onClick={() => navigate("/")}
-              className="bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition"
+              className=" cursor-pointer bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition"
             >
               Découvrir des images
             </button>
@@ -60,7 +61,7 @@ const FavoritesPage = () => {
         {/* Grille de favoris */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {favorites.map((image) => (
-            <div key={image.id} className="flex flex-col gap-2">
+            <div key={image.favori_id} className="flex flex-col gap-2">
               {/* Image cliquable */}
               <div className="relative group">
                 <img
@@ -73,9 +74,9 @@ const FavoritesPage = () => {
                 {/* Bouton supprimer au survol */}
                 <button
                   onClick={() => handleDelete(image.favori_id)}
-                  className="absolute top-2 right-2 bg-white text-gray-700 text-xs px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition hover:bg-red-50 hover:text-red-400"
+                  className="absolute top-2 right-2 bg-white text-gray-700 text-s px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition hover:bg-red-50 hover:text-red-400"
                 >
-                  ✕ Retirer
+                  ✕ Supprimer
                 </button>
               </div>
             </div>

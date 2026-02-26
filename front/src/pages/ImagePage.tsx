@@ -8,6 +8,7 @@ type Image = {
   url: string;
   source: string;
   dominant_colors: string[];
+  tag: string;
 };
 
 type Palette = {
@@ -20,6 +21,7 @@ const ImagePage = () => {
   const { id } = useParams();
   const [image, setImage] = useState<Image | null>(null);
   const [palette, setPalette] = useState<Palette | null>(null);
+  const [copiedColor, setCopiedColor] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchImageDetails = async () => {
@@ -49,11 +51,16 @@ const ImagePage = () => {
     }
   };
 
+  const handleCopy = (color: string) => {
+    navigator.clipboard.writeText(color);
+    setCopiedColor(color);
+    setTimeout(() => setCopiedColor(null), 1500);
+  };
+
   if (!image) return <p className="p-10 text-gray-400">Chargement...</p>;
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Contenu principal */}
       <main className="flex-1 flex flex-col md:flex-row items-start gap-10 px-6 md:px-16 py-12">
         {/* Image */}
         <div className="w-full md:w-1/2">
@@ -66,13 +73,15 @@ const ImagePage = () => {
 
         {/* Infos */}
         <div className="w-full md:w-1/2 flex flex-col gap-4">
-          <h1 className="font-bold text-5xl uppercase tracking-tight">
-            {image.title}
-          </h1>
+          <h1 className="font-black text-5xl tracking-tight">{image.title}</h1>
+          <p className="text-gray-400 font-light text-sm">{image.source}</p>
           <p className="font-semibold text-xl text-gray-800">
             {image.description}
           </p>
-          <p className="text-gray-400 font-light text-sm">{image.source}</p>
+
+          <p className=" bg-gray-100 text-gray-800 w-fit text-s font-semibold px-3 py-1 rounded-full">
+            {image.tag}
+          </p>
 
           {/* Palette */}
           {palette && (
@@ -80,13 +89,18 @@ const ImagePage = () => {
               {palette.colors.map((color, index) => (
                 <div
                   key={color}
+                  onClick={() => handleCopy(color)}
                   style={{ backgroundColor: color }}
-                  className={`rounded-2xl ${
+                  className={`relative group rounded-2xl cursor-pointer transition hover:scale-105 ${
                     index < 2
-                      ? "w-36 h-20 md:w-48 md:h-24"
-                      : "w-24 h-20 md:w-32 md:h-24"
+                      ? "w-36 h-20 md:w-40 md:h-24"
+                      : "w-24 h-20 md:w-26 md:h-24"
                   }`}
-                />
+                >
+                  <span className="absolute inset-0 flex items-center justify-center text-white text-s font-medium opacity-0 group-hover:opacity-100 transition drop-shadow">
+                    {copiedColor === color ? "Copié ✓" : color}
+                  </span>
+                </div>
               ))}
             </div>
           )}
@@ -94,7 +108,7 @@ const ImagePage = () => {
           {/* Bouton favoris */}
           <button
             onClick={handleAddFavorite}
-            className="mt-6 w-fit bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition"
+            className="cursor-pointer mt-6 w-fit bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition"
           >
             ♡ Ajouter aux favoris
           </button>

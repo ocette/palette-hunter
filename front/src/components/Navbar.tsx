@@ -12,7 +12,7 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="bg-yellow-50 border-b border-gray-100 sticky top-0 z-50">
+    <nav className="bg-yellow-50 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -26,8 +26,10 @@ export function Navbar() {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`text-l font-bold transition hover:text-black ${
-                  location.pathname === link.to ? "text-black" : "text-gray-500"
+                className={`text-l font-bold transition hover:text-yellow-500 ${
+                  location.pathname === link.to
+                    ? "text-gray-900"
+                    : "text-gray-500"
                 }`}
               >
                 {link.label}
@@ -58,7 +60,9 @@ export function Navbar() {
               to={link.to}
               onClick={() => setToggleMenu(false)}
               className={`text-2xl font-bold tracking-tight transition ${
-                location.pathname === link.to ? "text-black" : "text-gray-500"
+                location.pathname === link.to
+                  ? "text-gray-900"
+                  : "text-gray-500"
               }`}
             >
               {link.label}
