@@ -45,40 +45,73 @@ router.get("/color", async (req, res) => {
     return res.status(400).json({ error: "Paramètre hex requis" });
   }
 
+  // On découpe les couleurs séparées par des virgules
+  const hexColors = String(hex)
+    .split(",")
+    .map((h) => h.trim());
+
   try {
     const response = await sql`
-      WITH input_color AS (
-        SELECT
-          ('x' || substring(${hex}, 2, 2))::bit(8)::int AS r,
-          ('x' || substring(${hex}, 4, 2))::bit(8)::int AS g,
-          ('x' || substring(${hex}, 6, 2))::bit(8)::int AS b
-      ),
-      color_distances AS (
+      WITH color_distances AS (
         SELECT
           p.id,
-          c.hex,
-          sqrt(
-            power(('x' || substring(c.hex, 2, 2))::bit(8)::int - ic.r, 2) +
-            power(('x' || substring(c.hex, 4, 2))::bit(8)::int - ic.g, 2) +
-            power(('x' || substring(c.hex, 6, 2))::bit(8)::int - ic.b, 2)
-          ) AS distance
+          AVG(
+            sqrt(
+              power(('x' || substring(c.hex, 2, 2))::bit(8)::int - input.r, 2) +
+              power(('x' || substring(c.hex, 4, 2))::bit(8)::int - input.g, 2) +
+              power(('x' || substring(c.hex, 6, 2))::bit(8)::int - input.b, 2)
+            )
+          ) AS avg_distance
         FROM palettes p
         CROSS JOIN LATERAL unnest(p.colors) AS c(hex)
-        CROSS JOIN input_color ic
+        CROSS JOIN LATERAL (
+          SELECT
+            ('x' || substring(input_hex, 2, 2))::bit(8)::int AS r,
+            ('x' || substring(input_hex, 4, 2))::bit(8)::int AS g,
+            ('x' || substring(input_hex, 6, 2))::bit(8)::int AS b
+          FROM unnest(${hexColors}::text[]) AS input_hex
+        ) AS input
+        GROUP BY p.id
       )
-      SELECT
-        images.*,
-        MIN(cd.distance) AS min_distance
+      SELECT images.*, cd.avg_distance
       FROM color_distances cd
       JOIN images ON images.id = cd.id
-      GROUP BY images.id
-      ORDER BY min_distance ASC
-      LIMIT 5
+      ORDER BY avg_distance ASC
+      LIMIT 10
     `;
     res.json(response);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Échec de la recherche par couleur" });
+  }
+});
+
+// Route pour récupérer les tags des images
+router.get("/tags", async (_, res) => {
+  try {
+    const response = await sql`
+      SELECT DISTINCT tag FROM images
+      WHERE tag IS NOT NULL
+      ORDER BY tag ASC
+    `;
+    res.json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Échec de récupération des tags" });
+  }
+});
+
+// Route pour filtrer les images par tag
+router.get("/tag/:tag", async (req, res) => {
+  const { tag } = req.params;
+  try {
+    const response = await sql`
+      SELECT * FROM images WHERE tag = ${tag}
+    `;
+    res.json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Échec du filtrage par tag" });
   }
 });
 
@@ -102,14 +135,17 @@ router.get("/:id", async (req, res) => {
 });
 
 // Route pour ajouter une nouvelle image
-router.post("/images", async (req, res) => {
-  const { title, description, url, source, dominant_colors } = req.body;
+router.post("/", async (req, res) => {
+  const { title, description, url, source, dominant_colors, tag } = req.body;
   if (!title || !url || !source || !dominant_colors) {
     return res.status(400).json({ error: "Champs obligatoires manquants" });
   }
   try {
-    const response =
-      await sql` INSERT INTO images(title, description, url, source, dominant_colors) VALUES(${title}, ${description}, ${url}, ${source}, ${dominant_colors}) RETURNING *`;
+    const response = await sql`
+      INSERT INTO images (title, description, url, source, dominant_colors, tag)
+      VALUES (${title}, ${description}, ${url}, ${source}, ${dominant_colors}, ${tag})
+      RETURNING *
+    `;
     res.status(201).json(response[0]);
   } catch (error) {
     console.error(error);

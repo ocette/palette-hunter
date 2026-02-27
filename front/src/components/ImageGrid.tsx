@@ -14,7 +14,7 @@ type Props = {
   images: Image[] | null;
 };
 
-const ImageGrid = ({ images: searchResults }: Props) => {
+function ImageGrid({ images: searchResults }: Props) {
   const [images, setImages] = useState<Image[]>([]);
   const navigate = useNavigate();
 
@@ -61,13 +61,13 @@ const ImageGrid = ({ images: searchResults }: Props) => {
           <img
             src={image.url}
             alt={image.title}
-            className="w-full aspect-3/4 object-cover rounded-2xl group-hover:brightness-90 transition"
+            className="w-full aspect-3/4 object-cover rounded-2xl md:group-hover:brightness-90 transition"
           />
 
           {/* Icône coeur */}
           <button
             onClick={(e) => handleAddFavorite(e, image.id)}
-            className="absolute top-2 right-2 bg-white text-gray-700 text-s px-3 py-1 rounded-full opacity-0 group-hover:opacity-100  hover:bg-purple-50 hover:text-purple-500"
+            className="absolute top-2 right-2 bg-white text-gray-700 text-s px-3 py-1 rounded-full opacity-0 md:group-hover:opacity-100 md:hover:bg-purple-50 md:hover:text-purple-500"
           >
             ♡ Ajouter aux favoris
           </button>
@@ -75,6 +75,6 @@ const ImageGrid = ({ images: searchResults }: Props) => {
       ))}
     </div>
   );
-};
+}
 
 export default ImageGrid;

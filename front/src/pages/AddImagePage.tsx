@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer";
 
-const AddImagePage = () => {
+function AddImagePage() {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
@@ -9,10 +10,13 @@ const AddImagePage = () => {
   const [url, setUrl] = useState("");
   const [source, setSource] = useState("");
   const [dominantColors, setDominantColors] = useState("");
+  const [tags, setTags] = useState("");
+  const [customTag, setCustomTag] = useState("");
+  const [paletteColors, setPaletteColors] = useState("");
 
   const handleSubmit = async () => {
     try {
-      await fetch("http://localhost:4242/images", {
+      const imageResponse = await fetch("http://localhost:4242/images", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -20,6 +24,7 @@ const AddImagePage = () => {
           description,
           url,
           source,
+          tag: tags === "autre" ? customTag : tags,
           dominant_colors: dominantColors
             .split(",")
             .map(
@@ -27,6 +32,16 @@ const AddImagePage = () => {
                 color.trim().charAt(0).toUpperCase() +
                 color.trim().slice(1).toLowerCase(),
             ),
+        }),
+      });
+      const newImage = await imageResponse.json();
+
+      await fetch("http://localhost:4242/palettes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          image_id: newImage.id,
+          colors: paletteColors.split(",").map((c) => c.trim()),
         }),
       });
       alert("Image ajoutée avec succès !");
@@ -39,7 +54,7 @@ const AddImagePage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-1 flex flex-col items-center px-6 md:px-16 py-12">
-        <h1 className="font-extrabold text-4xl uppercase tracking-tight self-center mb-10">
+        <h1 className="font-extrabold text-4xl tracking-tight self-center mb-10">
           Ajouter une image
         </h1>
 
@@ -100,6 +115,38 @@ const AddImagePage = () => {
             />
           </div>
 
+          {/* Tag */}
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">
+              Tag <span className="text-red-400">*</span>
+            </label>
+            <select
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
+              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 outline-none focus:border-gray-400 transition appearance-none"
+            >
+              <option value="">Sélectionner un tag</option>
+              <option value="nature">Nature</option>
+              <option value="urbain">Urbain</option>
+              <option value="architecture">Architecture</option>
+              <option value="abstrait">Abstrait</option>
+              <option value="culture">Culture</option>
+              <option value="art">Art</option>
+              <option value="autre">Autre</option>
+            </select>
+
+            {/* Champ texte qui apparaît uniquement si "Autre" est sélectionné */}
+            {tags === "autre" && (
+              <input
+                type="text"
+                value={customTag}
+                onChange={(e) => setCustomTag(e.target.value)}
+                placeholder="Écris ton tag..."
+                className="mt-2 border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-300 outline-none focus:border-gray-400 transition"
+              />
+            )}
+          </div>
+
           {/* Couleurs dominantes */}
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-gray-700">
@@ -117,17 +164,35 @@ const AddImagePage = () => {
             </p>
           </div>
 
+          {/* Palette de couleurs */}
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">
+              Palette de couleurs <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={paletteColors}
+              onChange={(e) => setPaletteColors(e.target.value)}
+              placeholder="Ex: #C9BECC, #82CCEC, #BA3303, #F0A644, #1D0F04"
+              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-300 outline-none focus:border-gray-400 transition"
+            />
+            <p className="text-xs text-gray-400 mt-1">
+              5 codes hexadécimaux séparés par des virgules
+            </p>
+          </div>
+
           {/* Bouton */}
           <button
             onClick={handleSubmit}
-            className="mt-4 w-fit bg-black text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition"
+            className=" cursor-pointer mt-4 w-fit bg-yellow-200 border border-yellow-200 text-gray-900 px-6 py-3 rounded-full font-bold md:hover:bg-yellow-100 transition"
           >
             Ajouter l'image
           </button>
         </div>
       </main>
+      <Footer />
     </div>
   );
-};
+}
 
 export default AddImagePage;

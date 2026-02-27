@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Footer from "../components/Footer";
 
 type Image = {
   id: number;
@@ -17,7 +18,7 @@ type Palette = {
   colors: string[];
 };
 
-const ImagePage = () => {
+function ImagePage() {
   const { id } = useParams();
   const [image, setImage] = useState<Image | null>(null);
   const [palette, setPalette] = useState<Palette | null>(null);
@@ -61,7 +62,7 @@ const ImagePage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-1 flex flex-col md:flex-row items-start gap-10 px-6 md:px-16 py-12">
+      <main className="flex-1 flex flex-col md:flex-row items-start gap-10 px-6 md:px-16 py-12 max-w-7xl mx-auto w-full">
         {/* Image */}
         <div className="w-full md:w-1/2">
           <img
@@ -86,36 +87,50 @@ const ImagePage = () => {
           {/* Palette */}
           {palette && (
             <div className="flex flex-wrap gap-3 mt-4">
-              {palette.colors.map((color, index) => (
+              {/* Les 2 grands carrés (index 0 et 1) */}
+              {palette.colors.slice(0, 2).map((color) => (
                 <div
                   key={color}
                   onClick={() => handleCopy(color)}
                   style={{ backgroundColor: color }}
-                  className={`relative group rounded-2xl cursor-pointer transition hover:scale-105 ${
-                    index < 2
-                      ? "w-36 h-20 md:w-40 md:h-24"
-                      : "w-24 h-20 md:w-26 md:h-24"
-                  }`}
+                  className="relative group rounded-2xl cursor-pointer transition md:hover:scale-105 w-36 h-20 md:w-40 md:h-24"
                 >
-                  <span className="absolute inset-0 flex items-center justify-center text-white text-s font-medium opacity-0 group-hover:opacity-100 transition drop-shadow">
+                  <span className="absolute inset-0 flex items-center justify-center text-white text-s font-medium opacity-0 md:group-hover:opacity-100 transition drop-shadow">
                     {copiedColor === color ? "Copié ✓" : color}
                   </span>
                 </div>
               ))}
+
+              {/* Les 3 petits carrés (index 2, 3 et 4) */}
+              <div className="w-full flex flex-wrap gap-3">
+                {palette.colors.slice(2).map((color) => (
+                  <div
+                    key={color}
+                    onClick={() => handleCopy(color)}
+                    style={{ backgroundColor: color }}
+                    className="relative group rounded-2xl cursor-pointer transition md:hover:scale-105 w-24 h-20 md:w-26 md:h-24"
+                  >
+                    <span className="absolute inset-0 flex items-center justify-center text-white text-s font-medium opacity-0 md:group-hover:opacity-100 transition drop-shadow">
+                      {copiedColor === color ? "Copié ✓" : color}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
           {/* Bouton favoris */}
           <button
             onClick={handleAddFavorite}
-            className="cursor-pointer mt-6 w-fit bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition"
+            className="cursor-pointer mt-6 w-fit bg-yellow-200 border border-yellow-200 text-gray-900 px-6 py-3 rounded-full font-bold md:hover:bg-yellow-100  transition"
           >
             ♡ Ajouter aux favoris
           </button>
         </div>
       </main>
+      <Footer />
     </div>
   );
-};
+}
 
 export default ImagePage;

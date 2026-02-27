@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer";
 
 type Image = {
   id: number;
@@ -8,7 +9,7 @@ type Image = {
   url: string;
 };
 
-const FavoritesPage = () => {
+function FavoritesPage() {
   const [favorites, setFavorites] = useState<Image[]>([]);
   const navigate = useNavigate();
 
@@ -41,8 +42,8 @@ const FavoritesPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-1 px-6 md:px-16 py-12">
-        <h1 className="font-extrabold text-4xl uppercase tracking-tight mb-10 text-center">
-          Mes Favoris
+        <h1 className="font-extrabold text-4xl tracking-tight mb-10 text-center">
+          Mes favoris
         </h1>
 
         {/* Aucun favori */}
@@ -51,7 +52,7 @@ const FavoritesPage = () => {
             <p className="text-lg">Aucun favori pour le moment</p>
             <button
               onClick={() => navigate("/")}
-              className=" cursor-pointer bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition"
+              className="cursor-pointer  bg-yellow-200 border border-yellow-200 text-gray-900 px-6 py-2 rounded-full text-m font-bold md:hover:bg-yellow-100 transition"
             >
               Découvrir des images
             </button>
@@ -83,8 +84,9 @@ const FavoritesPage = () => {
           ))}
         </div>
       </main>
+      <Footer />
     </div>
   );
-};
+}
 
 export default FavoritesPage;
