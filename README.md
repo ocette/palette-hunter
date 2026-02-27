@@ -1,6 +1,10 @@
 # 🎨 Palette Hunter
 
-Palette Hunter est une application web fullstack permettant de découvrir des images et leurs palettes de couleurs. On peut rechercher des images par couleur, consulter leurs palettes, ajouter ses propres images et sauvegarder ses favoris.
+Palette Hunter est une application web fullstack permettant de découvrir des images et leurs palettes de couleurs. On peut rechercher des images par couleur via un color picker, filtrer par tag, consulter leurs palettes, ajouter ses propres images et sauvegarder ses favoris.
+
+![Palette Hunter](../palette-hunter/front/public/screenshot-accueil.png)
+
+---
 
 ## 🛠️ Stack technique
 
@@ -8,24 +12,33 @@ Palette Hunter est une application web fullstack permettant de découvrir des im
 - **Backend** : Node.js, Express
 - **Base de données** : PostgreSQL (Neon)
 
+---
+
 ## 📁 Structure du projet
 
 ```
 palette-hunter/
-├── back/         # Serveur Express
-│   └── index.js
-└── front/        # Application React
+├── back/
+│   ├── index.js
+│   └── routes/
+│       ├── images.js
+│       ├── palettes.js
+│       └── favoris.js
+└── front/
     └── src/
         ├── components/
         │   ├── Navbar.tsx
         │   ├── ImageGrid.tsx
-        │   └── SearchBar.tsx
+        │   ├── SearchBar.tsx
+        │   └── Footer.tsx
         └── pages/
             ├── HomePage.tsx
             ├── ImagePage.tsx
             ├── FavoritesPage.tsx
             └── AddImagePage.tsx
 ```
+
+---
 
 ## 🚀 Installation
 
@@ -38,7 +51,7 @@ palette-hunter/
 
 ```bash
 cd back
-pnpm install
+npm install
 ```
 
 Crée un fichier `.env` à la racine du dossier `back` :
@@ -58,32 +71,39 @@ node index.js
 
 ```bash
 cd front
-pnpm install
-pnpm run dev
+npm install
+npm run dev
 ```
 
 L'application est accessible sur `http://localhost:5173`
+
+---
 
 ## 🗄️ Base de données
 
 La base de données contient 3 tables :
 
-- **images** : les images avec leur titre, description, url, source et couleurs dominantes
+- **images** : les images avec leur titre, description, url, source, tag et couleurs dominantes
 - **palettes** : les palettes de couleurs associées à chaque image (codes hexadécimaux)
 - **favoris** : les images sauvegardées en favori
+
+---
 
 ## 📡 Routes API
 
 ### Images
 
-| Méthode | Route                                  | Description                      |
-| ------- | -------------------------------------- | -------------------------------- |
-| GET     | `/api/images`                          | Récupère toutes les images       |
-| GET     | `/api/images/:id`                      | Récupère une image et sa palette |
-| GET     | `/api/images/search?colors=Rouge,Bleu` | Recherche des images par couleur |
-| POST    | `/api/images`                          | Ajoute une nouvelle image        |
+| Méthode | Route                              | Description                                   |
+| ------- | ---------------------------------- | --------------------------------------------- |
+| GET     | `/images`                          | Récupère toutes les images                    |
+| GET     | `/images/search?colors=Rouge,Bleu` | Recherche des images par nom de couleur       |
+| GET     | `/images/color?hex=%23ff0000`      | Recherche des images par couleur hexadécimale |
+| GET     | `/images/tags`                     | Récupère tous les tags distincts              |
+| GET     | `/images/tag/:tag`                 | Filtre les images par tag                     |
+| GET     | `/images/:id`                      | Récupère une image et sa palette              |
+| POST    | `/images`                          | Ajoute une nouvelle image                     |
 
-#### Body pour POST `/api/images`
+#### Body pour POST `/images`
 
 ```json
 {
@@ -91,19 +111,35 @@ La base de données contient 3 tables :
   "description": "Une description",
   "url": "https://monimage.com/photo.jpg",
   "source": "Unsplash",
+  "tag": "nature",
   "dominant_colors": ["Rouge", "Bleu", "Vert"]
+}
+```
+
+### Palettes
+
+| Méthode | Route       | Description                    |
+| ------- | ----------- | ------------------------------ |
+| POST    | `/palettes` | Ajoute une palette à une image |
+
+#### Body pour POST `/palettes`
+
+```json
+{
+  "image_id": 1,
+  "colors": ["#C9BECC", "#82CCEC", "#BA3303", "#F0A644", "#1D0F04"]
 }
 ```
 
 ### Favoris
 
-| Méthode | Route              | Description                  |
-| ------- | ------------------ | ---------------------------- |
-| GET     | `/api/favoris`     | Récupère tous les favoris    |
-| POST    | `/api/favoris`     | Ajoute une image aux favoris |
-| DELETE  | `/api/favoris/:id` | Supprime un favori           |
+| Méthode | Route          | Description                  |
+| ------- | -------------- | ---------------------------- |
+| GET     | `/favoris`     | Récupère tous les favoris    |
+| POST    | `/favoris`     | Ajoute une image aux favoris |
+| DELETE  | `/favoris/:id` | Supprime un favori           |
 
-#### Body pour POST `/api/favoris`
+#### Body pour POST `/favoris`
 
 ```json
 {
@@ -111,11 +147,17 @@ La base de données contient 3 tables :
 }
 ```
 
+---
+
 ## 📄 Pages
 
-| URL           | Description                                            |
-| ------------- | ------------------------------------------------------ |
-| `/`           | Mosaïque d'images + barre de recherche par couleur     |
-| `/images/:id` | Détail d'une image avec sa palette + ajout aux favoris |
-| `/favoris`    | Liste des images favorites avec suppression            |
-| `/ajouter`    | Formulaire d'ajout d'une nouvelle image                |
+| URL           | Description                                                      |
+| ------------- | ---------------------------------------------------------------- |
+| `/`           | Mosaïque d'images + recherche par couleur + filtres par tag      |
+| `/images/:id` | Détail d'une image avec sa palette cliquable + ajout aux favoris |
+| `/favoris`    | Liste des images favorites avec suppression                      |
+| `/ajouter`    | Formulaire d'ajout d'une nouvelle image avec sa palette          |
+
+---
+
+_Made with 💛 by Océane_
