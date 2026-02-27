@@ -15,7 +15,7 @@ const SearchBar = ({ onSearch }: Props) => {
     const fetchByColor = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4242/api/images/color?hex=${encodeURIComponent(hexColor)}`,
+          `http://localhost:4242/images/color?hex=${encodeURIComponent(hexColor)}`,
         );
         const data = await response.json();
         onSearch(data);

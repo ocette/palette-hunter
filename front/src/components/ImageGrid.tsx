@@ -24,7 +24,7 @@ const ImageGrid = ({ images: searchResults }: Props) => {
     } else {
       const fetchImages = async () => {
         try {
-          const response = await fetch("http://localhost:4242/api/images");
+          const response = await fetch("http://localhost:4242/images");
           const data = await response.json();
           setImages(data);
         } catch (error) {
@@ -39,7 +39,7 @@ const ImageGrid = ({ images: searchResults }: Props) => {
     // Empêche de naviguer vers la page détail quand on clique sur le coeur
     e.stopPropagation();
     try {
-      await fetch("http://localhost:4242/api/favoris", {
+      await fetch("http://localhost:4242/favoris", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image_id: id }),

@@ -12,7 +12,7 @@ const AddImagePage = () => {
 
   const handleSubmit = async () => {
     try {
-      await fetch("http://localhost:4242/api/images", {
+      await fetch("http://localhost:4242/images", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

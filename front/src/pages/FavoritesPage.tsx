@@ -15,7 +15,7 @@ const FavoritesPage = () => {
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const response = await fetch("http://localhost:4242/api/favoris");
+        const response = await fetch("http://localhost:4242/favoris");
         const data = await response.json();
         setFavorites(data);
       } catch (error) {
@@ -28,7 +28,7 @@ const FavoritesPage = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await fetch(`http://localhost:4242/api/favoris/${id}`, {
+      await fetch(`http://localhost:4242/favoris/${id}`, {
         method: "DELETE",
       });
       alert("Image suprrimée des favoris !");

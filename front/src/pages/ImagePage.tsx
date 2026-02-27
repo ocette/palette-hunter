@@ -26,7 +26,7 @@ const ImagePage = () => {
   useEffect(() => {
     const fetchImageDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:4242/api/images/${id}`);
+        const response = await fetch(`http://localhost:4242/images/${id}`);
         const data = await response.json();
         setImage(data.image);
         setPalette(data.palette[0]);
@@ -40,7 +40,7 @@ const ImagePage = () => {
 
   const handleAddFavorite = async () => {
     try {
-      await fetch("http://localhost:4242/api/favoris", {
+      await fetch("http://localhost:4242/favoris", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image_id: id }),
