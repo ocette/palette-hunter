@@ -2,7 +2,7 @@
 
 Palette Hunter est une application web fullstack permettant de découvrir des images et leurs palettes de couleurs. On peut rechercher des images par couleur via un color picker, filtrer par tag, consulter leurs palettes, ajouter ses propres images et sauvegarder ses favoris.
 
-![Palette Hunter](./front/public/screenshot-accueil.png)
+![Palette Hunter](./thumbnail.png)
 
 ---
 
