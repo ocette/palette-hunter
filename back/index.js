@@ -29,6 +29,10 @@ app.get("/", async (_, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  app.listen(process.env.PORT || 4242, () => {
+    console.log(`Serveur lancé sur le port ${process.env.PORT || 4242}`);
+  });
+}
+
+module.exports = app;
