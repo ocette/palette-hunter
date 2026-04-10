@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
+import { API_URL } from "../config";
 
 function AddImagePage() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ function AddImagePage() {
 
   const handleSubmit = async () => {
     try {
-      const imageResponse = await fetch("http://localhost:4242/images", {
+      const imageResponse = await fetch(`${API_URL}/images`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -36,7 +37,7 @@ function AddImagePage() {
       });
       const newImage = await imageResponse.json();
 
-      await fetch("http://localhost:4242/palettes", {
+      await fetch(`${API_URL}/palettes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

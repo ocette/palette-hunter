@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Footer from "../components/Footer";
+import { API_URL } from "../config";
 
 type Image = {
   id: number;
@@ -27,7 +28,7 @@ function ImagePage() {
   useEffect(() => {
     const fetchImageDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:4242/images/${id}`);
+        const response = await fetch(`${API_URL}/images/${id}`);
         const data = await response.json();
         setImage(data.image);
         setPalette(data.palette[0]);
@@ -41,7 +42,7 @@ function ImagePage() {
 
   const handleAddFavorite = async () => {
     try {
-      await fetch("http://localhost:4242/favoris", {
+      await fetch(`${API_URL}/favoris`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image_id: id }),

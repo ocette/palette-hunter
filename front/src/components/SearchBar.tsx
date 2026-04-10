@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { API_URL } from "../config";
 
 type Props = {
   onSearch: (results: any[] | null) => void;
@@ -19,7 +20,7 @@ function SearchBar({ onSearch }: Props) {
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const response = await fetch("http://localhost:4242/images/tags");
+        const response = await fetch(`${API_URL}/images/tags`);
         const data = await response.json();
         setTags(data.map((t: { tag: string }) => t.tag));
       } catch (error) {
@@ -37,7 +38,7 @@ function SearchBar({ onSearch }: Props) {
     const fetchByColors = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4242/images/color?hex=${encodeURIComponent(activeColors.join(","))}`,
+          `${API_URL}/images/color?hex=${encodeURIComponent(activeColors.join(","))}`,
         );
         const data = await response.json();
         onSearch(data);
@@ -59,7 +60,7 @@ function SearchBar({ onSearch }: Props) {
 
     setActiveTag(tag);
     try {
-      const response = await fetch(`http://localhost:4242/images/tag/${tag}`);
+      const response = await fetch(`${API_URL}/images/tag/${tag}`);
       const data = await response.json();
       onSearch(data);
     } catch (error) {

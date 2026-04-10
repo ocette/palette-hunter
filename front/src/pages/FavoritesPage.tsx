@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
+import { API_URL } from "../config";
 
 type Image = {
   id: number;
@@ -16,7 +17,7 @@ function FavoritesPage() {
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const response = await fetch("http://localhost:4242/favoris");
+        const response = await fetch(`${API_URL}/favoris`);
         const data = await response.json();
         setFavorites(data);
       } catch (error) {
@@ -29,7 +30,7 @@ function FavoritesPage() {
 
   const handleDelete = async (id: number) => {
     try {
-      await fetch(`http://localhost:4242/favoris/${id}`, {
+      await fetch(`${API_URL}/favoris/${id}`, {
         method: "DELETE",
       });
       alert("Image suprrimée des favoris !");
