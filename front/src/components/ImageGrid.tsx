@@ -97,7 +97,7 @@ function ImageGrid({ images: searchResults }: Props) {
           tabIndex={0}
           role="link"
           aria-label={`Voir la palette de ${image.title}`}
-          className="relative group cursor-pointer rounded-2xl focus:outline-2 focus:outline-offset-2 focus:outline-purple-500"
+          className="relative group cursor-pointer rounded-2xl focus:outline-2 focus:outline-offset-2 focus:outline-purple-600"
         >
           <img
             src={image.url}
@@ -113,7 +113,7 @@ function ImageGrid({ images: searchResults }: Props) {
           <button
             onClick={(e) => handleAddFavorite(e, image.id)}
             aria-label={`Ajouter ${image.title} aux favoris`}
-            className="absolute top-2 right-2 bg-white text-gray-700 text-s px-3 py-1 rounded-full opacity-0 md:group-hover:opacity-100 md:hover:bg-purple-50 md:hover:text-purple-500 focus:opacity-100"
+            className="absolute top-2 right-2 bg-white text-gray-700 text-s px-3 py-1 rounded-full opacity-0 md:group-hover:opacity-100 md:hover:bg-purple-50 md:hover:text-purple-600 focus:opacity-100"
           >
             {favorites[image.id] ? "✓ Ajouté" : "♡ Ajouter aux favoris"}
           </button>

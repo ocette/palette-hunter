@@ -100,12 +100,13 @@ function SearchBar({ onSearch }: Props) {
             type="color"
             value={colors[index] ?? "#ffffff"}
             onChange={(e) => handleColorChange(index, e.target.value)}
+            aria-label={`Couleur de recherche ${index + 1}`}
             className="w-0 h-0 opacity-0 absolute"
           />
         ))}
 
         {/* Loupe cliquable */}
-        <button onClick={handleOpen}>
+        <button onClick={handleOpen} aria-label="Rechercher par couleur">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-5 h-5 text-gray-400 hover:text-gray-600 transition"

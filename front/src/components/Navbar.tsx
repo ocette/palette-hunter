@@ -32,7 +32,7 @@ export function Navbar() {
                 className={`px-3 py-2 rounded-full text-s font-semibold transition-all ${
                   location.pathname === link.to
                     ? "bg-yellow-200 text-gray-900"
-                    : "text-gray-600 md:hover:bg-yellow-100 md:hover:text-gray-900"
+                    : "text-gray-700 md:hover:bg-yellow-100 md:hover:text-gray-900"
                 }`}
               >
                 {link.label}
@@ -44,6 +44,8 @@ export function Navbar() {
           <button
             className="lg:hidden p-2 rounded-md text-gray-900 md:hover:bg-yellow-100 transition"
             onClick={() => setToggleMenu(!toggleMenu)}
+            aria-label={toggleMenu ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-expanded={toggleMenu}
           >
             {toggleMenu ? (
               <svg
@@ -95,7 +97,7 @@ export function Navbar() {
               className={`px-4 py-2 rounded-lg text-s font-semibold transition-all ${
                 location.pathname === link.to
                   ? "bg-yellow-200 text-gray-900"
-                  : "text-gray-600 md:hover:bg-yellow-100 md:hover:text-gray-900"
+                  : "text-gray-700 md:hover:bg-yellow-100 md:hover:text-gray-900"
               }`}
             >
               {link.label}
