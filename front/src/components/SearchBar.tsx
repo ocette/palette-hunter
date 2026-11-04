@@ -126,7 +126,7 @@ function SearchBar({ onSearch }: Props) {
         {/* Placeholder */}
         {!isOpen && !hasColors && (
           <span
-            className="flex-1 items-center text-gray-300 text-sm cursor-pointer"
+            className="flex-1 items-center text-gray-500 text-sm cursor-pointer"
             onClick={handleOpen}
           >
             Rechercher par couleur
