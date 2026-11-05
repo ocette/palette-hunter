@@ -107,7 +107,8 @@ router.get("/color", async (req, res) => {
 router.get("/tags", async (_, res) => {
   try {
     const response = await sql`
-      SELECT DISTINCT tag FROM images
+      SELECT DISTINCT initcap(lower(tag)) AS tag
+      FROM images
       WHERE tag IS NOT NULL
       ORDER BY tag ASC
     `;
@@ -157,13 +158,9 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "Champs obligatoires manquants" });
   }
 
-  // 👇 ÉTAPE 1 : valider + normaliser AVANT l'insertion
-  let normalizedUrl;
-  try {
-    normalizedUrl = normalizeImageUrl(url);
-  } catch (error) {
-    return res.status(400).json({ error: error.message });
-  }
+  const normalizedTag = tag
+    ? tag.trim().charAt(0).toUpperCase() + tag.trim().slice(1).toLowerCase()
+    : null;
 
   try {
     const response = await sql`

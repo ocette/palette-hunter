@@ -127,13 +127,12 @@ function AddImagePage() {
               className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 outline-none focus:border-gray-400 transition appearance-none"
             >
               <option value="">Sélectionner un tag</option>
-              <option value="nature">Nature</option>
-              <option value="urbain">Urbain</option>
-              <option value="architecture">Architecture</option>
-              <option value="abstrait">Abstrait</option>
-              <option value="culture">Culture</option>
-              <option value="art">Art</option>
-              <option value="autre">Autre</option>
+              <option value="Nature">Nature</option>
+              <option value="Urbain">Urbain</option>
+              <option value="Architecture">Architecture</option>
+              <option value="Culture">Culture</option>
+              <option value="Art">Art</option>
+              <option value="Autre">Autre</option>
             </select>
 
             {/* Champ texte qui apparaît uniquement si "Autre" est sélectionné */}
