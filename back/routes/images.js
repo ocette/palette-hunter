@@ -2,6 +2,23 @@ import { Router } from "express";
 import { neon } from "@neondatabase/serverless";
 const sql = neon(process.env.DATABASE_URL);
 
+function normalizeImageUrl(rawUrl) {
+  const url = new URL(rawUrl); // lève une erreur si l'URL est invalide
+
+  const allowedHosts = ["images.unsplash.com", "images.pexels.com"];
+  if (!allowedHosts.includes(url.hostname)) {
+    throw new Error(
+      "Source d'image non autorisée (Unsplash ou Pexels uniquement)",
+    );
+  }
+
+  if (url.hostname === "images.unsplash.com") {
+    return `${url.origin}${url.pathname}?q=75&w=800&auto=format&fit=crop`;
+  }
+  // Pexels
+  return `${url.origin}${url.pathname}?auto=compress&cs=tinysrgb&w=800`;
+}
+
 const router = Router();
 
 // Route pour récupérer toutes les images
@@ -121,12 +138,11 @@ router.get("/:id", async (req, res) => {
 
   try {
     const imageResponse = await sql` SELECT * FROM images WHERE id = ${id}`;
-
     const paletteResponse =
       await sql` SELECT * FROM palettes WHERE image_id = ${id}`;
 
     res.json({ image: imageResponse[0], palette: paletteResponse });
-  } catch {
+  } catch (error) {
     console.error(error);
     res
       .status(500)
@@ -140,10 +156,19 @@ router.post("/", async (req, res) => {
   if (!title || !url || !source || !dominant_colors) {
     return res.status(400).json({ error: "Champs obligatoires manquants" });
   }
+
+  // 👇 ÉTAPE 1 : valider + normaliser AVANT l'insertion
+  let normalizedUrl;
+  try {
+    normalizedUrl = normalizeImageUrl(url);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+
   try {
     const response = await sql`
       INSERT INTO images (title, description, url, source, dominant_colors, tag)
-      VALUES (${title}, ${description}, ${url}, ${source}, ${dominant_colors}, ${tag})
+      VALUES (${title}, ${description}, ${normalizedUrl}, ${source}, ${dominant_colors}, ${tag})
       RETURNING *
     `;
     res.status(201).json(response[0]);
