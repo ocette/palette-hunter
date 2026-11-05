@@ -26,7 +26,7 @@ router.get("/", async (_, res) => {
   try {
     const response = await sql`SELECT * FROM images`;
     res.json(response);
-  } catch {
+  } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Échec de récupération des images" });
   }
@@ -158,14 +158,23 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "Champs obligatoires manquants" });
   }
 
+  // 1. Normalisation du tag
   const normalizedTag = tag
     ? tag.trim().charAt(0).toUpperCase() + tag.trim().slice(1).toLowerCase()
     : null;
 
+  // 2. Validation + normalisation de l'URL (la partie qui manquait !)
+  let normalizedUrl;
+  try {
+    normalizedUrl = normalizeImageUrl(url); // ← on appelle la fonction
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+
   try {
     const response = await sql`
       INSERT INTO images (title, description, url, source, dominant_colors, tag)
-      VALUES (${title}, ${description}, ${normalizedUrl}, ${source}, ${dominant_colors}, ${tag})
+      VALUES (${title}, ${description}, ${normalizedUrl}, ${source}, ${dominant_colors}, ${normalizedTag})
       RETURNING *
     `;
     res.status(201).json(response[0]);
