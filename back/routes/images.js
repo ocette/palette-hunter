@@ -46,7 +46,7 @@ router.get("/search", async (req, res) => {
     const response = await sql`SELECT * FROM images
       WHERE dominant_colors && ${colorsArray.map((color) => color.charAt(0).toUpperCase() + color.slice(1).toLowerCase())}`;
     res.json(response);
-  } catch {
+  } catch (error) {
     console.error(error);
     res
       .status(500)
