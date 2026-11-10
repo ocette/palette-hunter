@@ -59,7 +59,7 @@ function ImagePage() {
     setTimeout(() => setCopiedColor(null), 1500);
   };
 
-  if (!image) return <p className="p-10 text-gray-400">Chargement...</p>;
+  if (!image) return <p className="p-10 text-gray-500">Chargement...</p>;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -76,7 +76,7 @@ function ImagePage() {
         {/* Infos */}
         <div className="w-full md:w-1/2 flex flex-col gap-4">
           <h1 className="font-black text-5xl tracking-tight">{image.title}</h1>
-          <p className="text-gray-400 font-light text-sm">{image.source}</p>
+          <p className="text-gray-500 font-light text-sm">{image.source}</p>
           <p className="font-semibold text-xl text-gray-800">
             {image.description}
           </p>
