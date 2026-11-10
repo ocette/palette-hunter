@@ -62,66 +62,83 @@ function AddImagePage() {
         <div className="w-full max-w-2xl flex flex-col gap-6">
           {/* Titre */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">
+            <label
+              htmlFor="title"
+              className="text-sm font-medium text-gray-700"
+            >
               Titre <span className="text-red-400">*</span>
             </label>
             <input
+              id="title"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Ex: Pagode"
-              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-300 outline-none focus:border-gray-400 transition"
+              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-500 outline-none focus:border-gray-400 transition"
             />
           </div>
 
           {/* Description */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">
+            <label
+              htmlFor="description"
+              className="text-sm font-medium text-gray-700"
+            >
               Description
             </label>
             <input
+              id="description"
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Ex: Pagode entourée de cerisiers en fleurs"
-              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-300 outline-none focus:border-gray-400 transition"
+              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-500 outline-none focus:border-gray-400 transition"
             />
           </div>
 
           {/* URL */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">
+            <label htmlFor="url" className="text-sm font-medium text-gray-700">
               URL <span className="text-red-400">*</span>
             </label>
             <input
+              id="url"
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="Ex: https://monimage.com/photo.jpg"
-              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-300 outline-none focus:border-gray-400 transition"
+              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-500 outline-none focus:border-gray-400 transition"
             />
           </div>
 
           {/* Source */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">
+            <label
+              htmlFor="source"
+              className="text-sm font-medium text-gray-700"
+            >
               Source <span className="text-red-400">*</span>
             </label>
             <input
+              id="source"
               type="text"
               value={source}
               onChange={(e) => setSource(e.target.value)}
               placeholder="Ex: Unsplash"
-              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-300 outline-none focus:border-gray-400 transition"
+              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-500 outline-none focus:border-gray-400 transition"
             />
           </div>
 
           {/* Tag */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">
+            <label
+              htmlFor="tag-select"
+              className="text-sm font-medium text-gray-700"
+            >
               Tag <span className="text-red-400">*</span>
             </label>
             <select
+              id="tag-select"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
               className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 outline-none focus:border-gray-400 transition appearance-none"
@@ -136,47 +153,57 @@ function AddImagePage() {
             </select>
 
             {/* Champ texte qui apparaît uniquement si "Autre" est sélectionné */}
-            {tags === "autre" && (
+            {tags === "Autre" && (
               <input
+                id="custom-tag"
+                aria-label="Nouveau tag"
                 type="text"
                 value={customTag}
                 onChange={(e) => setCustomTag(e.target.value)}
                 placeholder="Écris ton tag..."
-                className="mt-2 border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-300 outline-none focus:border-gray-400 transition"
+                className="mt-2 border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-500 outline-none focus:border-gray-400 transition"
               />
             )}
           </div>
 
           {/* Couleurs dominantes */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">
+            <label
+              htmlFor="dominant-colors"
+              className="text-sm font-medium text-gray-700"
+            >
               Couleurs dominantes <span className="text-red-400">*</span>
             </label>
             <input
+              id="dominant-colors"
               type="text"
               value={dominantColors}
               onChange={(e) => setDominantColors(e.target.value)}
               placeholder="Ex: Rouge, Bleu, Vert"
-              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-300 outline-none focus:border-gray-400 transition"
+              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-500 outline-none focus:border-gray-400 transition"
             />
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-gray-500 mt-1">
               Sépare les couleurs par des virgules
             </p>
           </div>
 
           {/* Palette de couleurs */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">
+            <label
+              htmlFor="palette-colors"
+              className="text-sm font-medium text-gray-700"
+            >
               Palette de couleurs <span className="text-red-400">*</span>
             </label>
             <input
+              id="palette-colors"
               type="text"
               value={paletteColors}
               onChange={(e) => setPaletteColors(e.target.value)}
               placeholder="Ex: #C9BECC, #82CCEC, #BA3303, #F0A644, #1D0F04"
-              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-300 outline-none focus:border-gray-400 transition"
+              className="border border-gray-200 rounded-2xl px-4 py-3 text-gray-700 placeholder-gray-500 outline-none focus:border-gray-400 transition"
             />
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-gray-500 mt-1">
               5 codes hexadécimaux séparés par des virgules
             </p>
           </div>
