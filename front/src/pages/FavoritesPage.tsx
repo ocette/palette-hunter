@@ -49,8 +49,8 @@ function FavoritesPage() {
 
         {/* Aucun favori */}
         {favorites.length === 0 && (
-          <div className="flex flex-col items-center justify-center gap-4 mt-24 text-gray-400">
-            <p className="text-lg">Aucun favori pour le moment</p>
+          <div className="flex flex-col items-center justify-center gap-4 mt-24">
+            <p className="text-lg text-gray-500">Aucun favori pour le moment</p>
             <button
               onClick={() => navigate("/")}
               className="cursor-pointer  bg-yellow-200 border border-yellow-200 text-gray-900 px-6 py-2 rounded-full text-m font-bold md:hover:bg-yellow-100 transition"
